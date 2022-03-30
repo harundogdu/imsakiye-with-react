@@ -1,0 +1,46 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import API_SERVICE from 'services/apiService'
+
+export const fetchCityByCityName = createAsyncThunk('city/fetchCityByCityName', async (cityName) => {
+    const response = await API_SERVICE.get(`/`, {
+        params: {
+            location: cityName,
+        }
+    })
+    return response
+})
+
+const initialState = {
+    city: 'Ankara',
+    isLoading: false,
+    data: []
+}
+
+export const counterSlice = createSlice({
+    name: 'city',
+    initialState,
+    reducers: {
+        setCity: (state, action) => {
+            state.city = action.payload
+        }
+    },
+    extraReducers: (builder) => {
+
+        builder.addCase(fetchCityByCityName.pending, (state, action) => {
+            state.isLoading = true
+        })
+
+        builder.addCase(fetchCityByCityName.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.data = action.payload.data
+        })
+
+        builder.addCase(fetchCityByCityName.rejected, (state, action) => {
+            state.isLoading = false
+        })
+
+    }
+})
+
+export const { setCity } = counterSlice.actions
+export default counterSlice.reducer
