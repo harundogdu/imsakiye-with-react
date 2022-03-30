@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Calendar, HeroSection, Select } from 'components';
+import Loading from 'components/loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCityByCityName } from 'features/city/citySlice';
 
 function App() {
+  const { data, city } = useSelector(state => state.city);
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    dispatch(fetchCityByCityName(city))
+  }, [city, dispatch])
+
+  if (data.length === 0 || data === undefined || data === null) {
+    return <Loading />
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='flex flex-col min-h-screen h-full w-full items-center justify-center bg-primary py-5 px-4'>
+      <Select />
+      <HeroSection data={data} />
+      <Calendar data={data} />
     </div>
   );
 }
