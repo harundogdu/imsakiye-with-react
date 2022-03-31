@@ -17,7 +17,7 @@ function App() {
   }
 
   return (
-    <div className='flex flex-col min-h-screen h-full w-full items-center justify-center bg-primary py-8 px-4'>
+    <div className='flex flex-col min-h-screen h-full w-full items-center justify-center bg-primary p-4'>
       <Select />
       <HeroSection data={data} />
       <Calendar data={data} />

@@ -10,12 +10,12 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
     const iftar = convertTime((data.items[0]['maghrib']));
     return (
-        <div className='h-screen flex flex-col items-center justify-center text-white w-full'>
+        <div className='h-screen flex flex-col md:items-center md:justify-center py-5 text-white w-full'>
             <div
                 className={`bg-secondary shadow-2xl p-6 md:p-12 rounded-lg space-y-4 transition-all duration-300 cursor-pointer flex flex-col ${isLoading ? "animate-pulse" : "hover:scale-105"}`}
             >
 
-                <div className=' flex flex-col space-y-4'>
+                <div className=' flex flex-col space-y-2'>
                     <h1 className='text-4xl font-bold text-center'>{city}</h1>
                     <div className=' flex items-center justify-center gap-x-4'>
                         <div className='text-3xl font-bold'>Tarih</div>
