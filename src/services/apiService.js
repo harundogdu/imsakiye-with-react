@@ -3,7 +3,7 @@ import axios from "axios";
 const options = {
     method: 'GET',
     url: 'https://muslimsalat.p.rapidapi.com/(location)/(times)/(date)/(daylight)/(method).json',
-    params: { times: 'monthly', date: '02-04-2022', method: '5', location: 'Trabzon' },
+    params: { times: 'yearly', date: '02-04-2022', method: '5', location: 'Trabzon' },
     headers: {
         'X-RapidAPI-Host': process.env.REACT_APP_X_RapidAPI_Host,
         'X-RapidAPI-Key': process.env.REACT_APP_X_RapidAPI_Key,

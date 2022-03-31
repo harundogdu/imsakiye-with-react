@@ -8,6 +8,7 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 function Calendar({ data }) {
     const { isLoading } = useSelector(state => state.city)
     const { width } = useWindowDimensions();
+    const limitedData = data.items.slice(0, 30)
 
     return (
         <div className="w-full md:w-11/12 rounded-lg shadow-2xl p-2 bg-tertiary text-primary">
@@ -39,7 +40,7 @@ function Calendar({ data }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.items.map((item, index) => {
+                                {limitedData.map((item, index) => {
                                     moment.locale("tr");
                                     return (
                                         <tr
