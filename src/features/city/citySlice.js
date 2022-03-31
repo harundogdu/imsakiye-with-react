@@ -16,7 +16,7 @@ const initialState = {
     data: []
 }
 
-export const counterSlice = createSlice({
+export const citySlice = createSlice({
     name: 'city',
     initialState,
     reducers: {
@@ -42,5 +42,5 @@ export const counterSlice = createSlice({
     }
 })
 
-export const { setCity } = counterSlice.actions
-export default counterSlice.reducer
+export const { setCity } = citySlice.actions
+export default citySlice.reducer

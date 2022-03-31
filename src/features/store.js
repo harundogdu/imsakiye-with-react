@@ -1,9 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import cityReducer from 'features/city/citySlice'
-
 
 export const store = configureStore({
     reducer: {
-        city: cityReducer
+        city: cityReducer,
     },
+    middleware: getDefaultMiddleware({
+        serializableCheck: false,
+    }),
 })

@@ -34,6 +34,7 @@ function Calendar({ data }) {
                                         <tr
                                             title={`${index === 25 ? "Kadir Gecesi" : ""}`}
                                             className={`${index === 25 ? "bg-primary text-white" : "bg-tertiary"}`}
+                                            key={index}
                                         >
                                             <td>{++index}</td>
                                             <td>{moment(item.date_for).format("dddd")}</td>

@@ -4,24 +4,23 @@ import 'moment/locale/tr';
 import { times } from 'helpers';
 import { convertTime } from 'helpers/utils';
 import { useSelector } from 'react-redux';
+import Countdown from 'react-countdown';
 
 function HeroSection({ data }) {
-
     const { isLoading, city } = useSelector(state => state.city);
+    const iftar = convertTime((data.items[0]['maghrib']));
     return (
         <div className='h-screen flex flex-col items-center justify-center text-white w-full'>
             <div
                 className={`bg-secondary shadow-2xl p-6 md:p-12 rounded-lg space-y-4 transition-all duration-300 cursor-pointer ${isLoading ? "animate-pulse" : "hover:scale-105"}`}
             >
-
                 <div>
                     <h1 className='text-4xl font-bold text-center'>{city}</h1>
                 </div>
 
-
                 <div className=' flex items-center justify-center gap-x-4'>
-                    <div className='text-4xl font-bold'>Tarih</div>
-                    <div className='text-4xl'>
+                    <div className='text-3xl font-bold'>Tarih</div>
+                    <div className='text-3xl'>
                         {
                             isLoading ? "..." : moment(data.items[0].date_for).format('L')
                         }
@@ -31,7 +30,7 @@ function HeroSection({ data }) {
                 <div className='flex flex-wrap items-center justify-center'>
                     {
                         times.map(time => (
-                            <div className='flex flex-col items-center justify-center p-4 px-6'>
+                            <div className='flex flex-col items-center justify-center p-4 px-6' key={time.id}>
                                 <div className='text-2xl font-bold'>{time.time}</div>
                                 <div className='text-xl'>
                                     {
@@ -43,8 +42,17 @@ function HeroSection({ data }) {
                     }
                 </div>
 
+                <div className='flex items-center justify-center text-2xl'>
+                    <span className={`mr-2`}>İftara Kalan Süre : </span>
+                    {
+                        isLoading
+                            ? "..."
+                            : <Countdown date={data.items[0].date_for + " " + iftar} />
+                    }
+                </div>
 
             </div>
+
         </div>
     );
 }

@@ -21,7 +21,7 @@ function Select() {
                 {
                     cities.map(city => {
                         if (city.name !== 'İstanbul' && city.name !== 'Ankara' && city.name !== 'İzmir') {
-                            return <option value={city.name}>{city.name}</option>
+                            return <option value={city.name} key={city.id}>{city.name}</option>
                         }
                         return null;
                     })
