@@ -3,28 +3,39 @@ import moment from "moment";
 import "moment/locale/tr";
 import { convertTime } from "helpers/utils";
 import { useSelector } from "react-redux";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 function Calendar({ data }) {
     const { isLoading } = useSelector(state => state.city)
+    const { width } = useWindowDimensions();
+
     return (
-        <div className="w-11/12  rounded-lg shadow-2xl p-2 bg-tertiary text-primary">
+        <div className="w-full md:w-11/12 rounded-lg shadow-2xl p-2 bg-tertiary text-primary">
             {
                 isLoading
                     ? "..."
                     : (
-                        <table className="h-full w-full table-auto text-lg text-justify">
+                        <table className="h-full w-full table-auto text-sm text-center">
                             <thead className="bg-primary text-white">
-                                <tr className="text-xl">
-                                    <th>#</th>
-                                    <th>Gün</th>
-                                    <th>Hicri Tarih</th>
-                                    <th>Miladi Tarih</th>
+                                <tr className="text-base text-center">
+                                    <th width={30} className="px-1">#</th>
+                                    {
+                                        width > 768
+                                            ?
+                                            <>
+                                                <th>Gün</th>
+                                                <th>Hicri Tarih</th>
+                                                <th> Tarih</th>
+                                            </>
+                                            :
+                                            null
+                                    }
                                     <th>İmsak</th>
-                                    <th>Güneş</th>
+                                    <th className="px-1">Güneş</th>
                                     <th>Öğle</th>
-                                    <th>İkindi</th>
+                                    <th className="px-1">İkindi</th>
                                     <th>Akşam</th>
-                                    <th>Yatsı</th>
+                                    <th className="px-1">Yatsı</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,10 +47,19 @@ function Calendar({ data }) {
                                             className={`${index === 25 ? "bg-primary text-white" : "bg-tertiary"}`}
                                             key={index}
                                         >
-                                            <td>{++index}</td>
-                                            <td>{moment(item.date_for).format("dddd")}</td>
-                                            <td>{index} Ramazan 1443</td>
-                                            <td>{moment(item.date_for).format("DD MMMM YYYY")}</td>
+                                            <td width={30} className="text-center">{++index}</td>
+                                            {
+                                                width > 768
+                                                    ?
+                                                    <>
+                                                        <td>{moment(item.date_for).format("dddd")}</td>
+                                                        <td>{index} Ramazan 1443</td>
+                                                        <td>{moment(item.date_for).format("DD MMMM YYYY")}</td>
+                                                    </>
+                                                    :
+                                                    null
+                                            }
+
                                             <td>{convertTime(item.fajr)}</td>
                                             <td>{convertTime(item.shurooq)}</td>
                                             <td>{convertTime(item.dhuhr)}</td>
