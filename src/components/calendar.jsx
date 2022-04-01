@@ -59,9 +59,9 @@ function Calendar({ data }) {
                                                 width > 768
                                                     ?
                                                     <>
-                                                        <td>{moment(item.date_for).format("dddd")}</td>
+                                                        <td>{moment(item.date_for.toString()).format("dddd")}</td>
                                                         <td>{index} Ramazan 1443</td>
-                                                        <td>{moment(item.date_for).format("DD MMMM YYYY")}</td>
+                                                        <td>{moment(item.date_for.toString()).format("DD MMMM YYYY")}</td>
                                                     </>
                                                     :
                                                     null
@@ -78,7 +78,7 @@ function Calendar({ data }) {
                                 })}
                                 <tr>
                                     <td colSpan={width > 768 ? 10 : 7} className="text-center pt-2">
-                                        Ramazan Bayramı 1. Gün : {moment(festivalDay[0].date_for).format('LL')}
+                                        Ramazan Bayramı 1. Gün : {moment(festivalDay[0].date_for.toString()).format('LL')}
                                     </td>
                                 </tr>
                             </tbody>

@@ -12,15 +12,15 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
 
     React.useEffect(() => {
-        if (activeDay.date_for === moment().format('YYYY-M-D')) {
-            const day = data.items.find(item => (moment(item.date_for).format('L') === moment().format('YYYY-M-D')))
+        if (activeDay.date_for.toString() === moment().format('YYYY-M-D')) {
+            const day = data.items.find(item => (moment(item.date_for.toString()).format('L') === moment().format('YYYY-M-D')))
             setActiveDay(day)
         } else {
             const tomorrow = moment().add(1, 'days').format('L')
-            const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
+            const day = data.items.find(item => (moment(item.date_for.toString()).format('L') === tomorrow))
             setActiveDay(day)
         }
-    }, [activeDay.date_for, data.items])
+    }, [activeDay, data.items])
 
     return (
         <div className='h-screen flex flex-col md:items-center md:justify-center py-5 text-white w-full'>
@@ -34,7 +34,7 @@ function HeroSection({ data }) {
                         <div className='text-3xl font-bold'>Tarih</div>
                         <div className='text-3xl'>
                             {
-                                isLoading ? "..." : moment(data.items[0].date_for).format('L')
+                                isLoading ? "..." : moment(data.items[0].date_for.toString()).format('L')
                             }
                         </div>
                     </div>
@@ -54,8 +54,8 @@ function HeroSection({ data }) {
                                 ? "..."
                                 : <Countdown
                                     date={`${status
-                                        ? activeDay.date_for + " " + activeDay.fajr 
-                                        : activeDay.date_for + " " + activeDay.maghrib }
+                                        ? activeDay.date_for.toString() + " " + activeDay.fajr 
+                                        : activeDay.date_for.toString() + " " + activeDay.maghrib }
                                         `}
                                     daysInHours
                                     overtime
