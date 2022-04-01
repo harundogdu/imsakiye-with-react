@@ -11,7 +11,7 @@ export const fetchCityByCityName = createAsyncThunk('city/fetchCityByCityName', 
 })
 
 const initialState = {
-    city: 'İstanbul',
+    city: localStorage.getItem('city') || 'İstanbul',
     isLoading: false,
     data: []
 }
@@ -21,6 +21,7 @@ export const citySlice = createSlice({
     initialState,
     reducers: {
         setCity: (state, action) => {
+            localStorage.setItem('city', action.payload)
             state.city = action.payload
         }
     },
