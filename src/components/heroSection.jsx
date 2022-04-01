@@ -14,7 +14,7 @@ function HeroSection({ data }) {
     React.useEffect(() => {
         if (moment().format('YYYY-M-D') !== data.items[0].date_for) {
             const tomorrow = moment().add(1, 'days').format('L')
-            const day = data.items.find(item => (moment(item.date_for.toString()).format('L') === tomorrow))
+            const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
             setActiveDay(day)
         } 
 
@@ -32,7 +32,7 @@ function HeroSection({ data }) {
                         <div className='text-3xl font-bold'>Tarih</div>
                         <div className='text-3xl'>
                             {
-                                isLoading ? "..." : moment(data.items[0].date_for.toString()).format('L')
+                                isLoading ? "..." : moment(activeDay.date_for).format('L')
                             }
                         </div>
                     </div>
@@ -52,8 +52,8 @@ function HeroSection({ data }) {
                                 ? "..."
                                 : <Countdown
                                     date={`${status
-                                        ? activeDay.date_for.toString() + " " + activeDay.fajr
-                                        : activeDay.date_for.toString() + " " + activeDay.maghrib}
+                                        ? activeDay.date_for + " " + activeDay.fajr
+                                        : activeDay.date_for + " " + activeDay.maghrib}
                                         `}
                                     daysInHours
                                     overtime

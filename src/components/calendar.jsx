@@ -59,9 +59,9 @@ function Calendar({ data }) {
                                                 width > 768
                                                     ?
                                                     <>
-                                                        <td>{moment(item.date_for.toString()).format("dddd")}</td>
+                                                        <td>{moment(item.date_for).format("dddd")}</td>
                                                         <td>{index} Ramazan 1443</td>
-                                                        <td>{moment(item.date_for.toString()).format("DD MMMM YYYY")}</td>
+                                                        <td>{moment(item.date_for).format("DD MMMM YYYY")}</td>
                                                     </>
                                                     :
                                                     null
