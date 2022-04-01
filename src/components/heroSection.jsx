@@ -12,14 +12,12 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
 
     React.useEffect(() => {
-        if (activeDay.date_for.toString() === moment().format('YYYY-M-D')) {
-            const day = data.items.find(item => (moment(item.date_for.toString()).format('L') === moment().format('YYYY-M-D')))
-            setActiveDay(day)
-        } else {
+        if (moment().format('YYYY-M-D') !== data.items[0].date_for) {
             const tomorrow = moment().add(1, 'days').format('L')
             const day = data.items.find(item => (moment(item.date_for.toString()).format('L') === tomorrow))
             setActiveDay(day)
-        }
+        } 
+
     }, [activeDay, data.items])
 
     return (
@@ -54,13 +52,13 @@ function HeroSection({ data }) {
                                 ? "..."
                                 : <Countdown
                                     date={`${status
-                                        ? activeDay.date_for.toString() + " " + activeDay.fajr 
-                                        : activeDay.date_for.toString() + " " + activeDay.maghrib }
+                                        ? activeDay.date_for.toString() + " " + activeDay.fajr
+                                        : activeDay.date_for.toString() + " " + activeDay.maghrib}
                                         `}
                                     daysInHours
                                     overtime
                                     onComplete={() => setStatus(!status)}
-                                        
+
                                 />
                         }
                     </div>
