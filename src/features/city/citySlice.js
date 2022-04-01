@@ -11,7 +11,7 @@ export const fetchCityByCityName = createAsyncThunk('city/fetchCityByCityName', 
 })
 
 const initialState = {
-    city: 'Ankara',
+    city: 'İstanbul',
     isLoading: false,
     data: []
 }

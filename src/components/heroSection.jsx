@@ -7,8 +7,21 @@ import { useSelector } from 'react-redux';
 import Countdown from 'react-countdown';
 
 function HeroSection({ data }) {
+    const [activeDay, setActiveDay] = React.useState(data.items[0]);
+    const [status, setStatus] = React.useState(true);
     const { isLoading, city } = useSelector(state => state.city);
-    const iftar = convertTime((data.items[0]['maghrib']));
+
+    React.useEffect(() => {
+        if (activeDay.date_for === moment().format('YYYY-M-D')) {
+            const day = data.items.find(item => (moment(item.date_for).format('L') === moment().format('YYYY-M-D')))
+            setActiveDay(day)
+        } else {
+            const tomorrow = moment().add(1, 'days').format('L')
+            const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
+            setActiveDay(day)
+        }
+    }, [activeDay.date_for, data.items])
+
     return (
         <div className='h-screen flex flex-col md:items-center md:justify-center py-5 text-white w-full'>
             <div
@@ -28,12 +41,27 @@ function HeroSection({ data }) {
                 </div>
 
                 <div className='flex flex-col items-center justify-center text-3xl'>
-                    <span className={`mr-2`}>İftara Kalan Süre</span>
+                    <span className={`mr-2`}>
+                        {
+                            status
+                                ? "Sahura Kalan Süre"
+                                : "İftara Kalan Süre"
+                        }
+                    </span>
                     <div>
                         {
                             isLoading
                                 ? "..."
-                                : <Countdown date={data.items[0].date_for + " " + iftar} />
+                                : <Countdown
+                                    date={`${status
+                                        ? activeDay.date_for + " " + activeDay.fajr 
+                                        : activeDay.date_for + " " + activeDay.maghrib }
+                                        `}
+                                    daysInHours
+                                    overtime
+                                    onComplete={() => setStatus(!status)}
+                                        
+                                />
                         }
                     </div>
                 </div>
@@ -45,7 +73,7 @@ function HeroSection({ data }) {
                                 <div className='text-2xl font-bold'>{time.time}</div>
                                 <div className='text-xl'>
                                     {
-                                        isLoading ? "..." : convertTime(data.items[0][time.time_converted])
+                                        isLoading ? "..." : convertTime(activeDay[time.time_converted])
                                     }
                                 </div>
                             </div>

@@ -9,6 +9,7 @@ function Calendar({ data }) {
     const { isLoading } = useSelector(state => state.city)
     const { width } = useWindowDimensions();
     const limitedData = data.items.slice(0, 30)
+    const festivalDay = data.items.slice(30, 31);
 
     return (
         <div className="w-full md:w-11/12 rounded-lg shadow-2xl p-2 bg-tertiary text-primary">
@@ -43,9 +44,14 @@ function Calendar({ data }) {
                                 {limitedData.map((item, index) => {
                                     moment.locale("tr");
                                     return (
+
+
                                         <tr
                                             title={`${index === 25 ? "Kadir Gecesi" : ""}`}
-                                            className={`${index === 25 ? "bg-primary text-white" : "bg-tertiary"}`}
+                                            className={`
+                                                ${index === 25 ? "bg-primary text-white" : "bg-tertiary"}
+                                                ${index === (parseInt(moment().format('D')) - 1) ? "bg-gray-300" : ""}
+                                            `}
                                             key={index}
                                         >
                                             <td width={30} className="text-center">{++index}</td>
@@ -70,6 +76,11 @@ function Calendar({ data }) {
                                         </tr>
                                     );
                                 })}
+                                <tr>
+                                    <td colSpan={width > 768 ? 10 : 7} className="text-center pt-2">
+                                        Ramazan Bayramı 1. Gün : {moment(festivalDay[0].date_for).format('LL')}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     )
