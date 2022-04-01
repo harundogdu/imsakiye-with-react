@@ -11,12 +11,15 @@ function HeroSection({ data }) {
     const [status, setStatus] = React.useState(true);
     const { isLoading, city } = useSelector(state => state.city);
 
+    // safari detect
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
     React.useEffect(() => {
         if (moment().format('YYYY-M-D') !== data.items[0].date_for) {
             const tomorrow = moment().add(1, 'days').format('L')
             const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
             setActiveDay(day)
-        } 
+        }
 
     }, [activeDay, data.items])
 
@@ -32,7 +35,7 @@ function HeroSection({ data }) {
                         <div className='text-3xl font-bold'>Tarih</div>
                         <div className='text-3xl'>
                             {
-                                isLoading ? "..." : moment(activeDay.date_for).format('L')
+                                isLoading ? "..." : moment(activeDay.date_for).format('L') || moment().format('L')
                             }
                         </div>
                     </div>
@@ -51,14 +54,21 @@ function HeroSection({ data }) {
                             isLoading
                                 ? "..."
                                 : <Countdown
-                                    date={`${status
-                                        ? activeDay.date_for + " " + activeDay.fajr
-                                        : activeDay.date_for + " " + activeDay.maghrib}
+                                    date={`
+                                    ${status
+                                            ?
+                                            isSafari
+                                                ? new Date(activeDay.date_for + "T" + activeDay.fajr)
+                                                : activeDay.date_for + " " + activeDay.fajr
+                                            :
+                                            isSafari
+                                                ? new Date(activeDay.date_for + "T" + activeDay.maghrib)
+                                                : activeDay.date_for + " " + activeDay.maghrib
+                                        }
                                         `}
                                     daysInHours
                                     overtime
                                     onComplete={() => setStatus(!status)}
-
                                 />
                         }
                     </div>
@@ -78,9 +88,7 @@ function HeroSection({ data }) {
                         ))
                     }
                 </div>
-
             </div>
-
         </div>
     );
 }

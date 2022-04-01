@@ -50,7 +50,7 @@ function Calendar({ data }) {
                                             title={`${index === 25 ? "Kadir Gecesi" : ""}`}
                                             className={`
                                                 ${index === 25 ? "bg-primary text-white" : "bg-tertiary"}
-                                                ${index === (parseInt(moment().format('D')) - 1) ? "bg-gray-300" : ""}
+                                                ${index === (parseInt(moment().format('D')) - 2) ? "bg-gray-300" : ""}
                                             `}
                                             key={index}
                                         >
