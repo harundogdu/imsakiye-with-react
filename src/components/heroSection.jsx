@@ -13,7 +13,7 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
 
     // safari detect
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
         const tomorrow = moment().add(1, 'days').format('L')
@@ -37,9 +37,7 @@ function HeroSection({ data }) {
                         <div className='text-3xl'>
                             {
                                 isLoading ? "..."
-                                    : isSafari
-                                        ? moment(activeDay.date_for).format('DD MMMM YYYY')
-                                        : moment(activeDay.date_for).locale('tr').format('DD MMMM YYYY')
+                                    : new Date(activeDay.date_for).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })
                             }
                         </div>
                     </div>
@@ -60,8 +58,8 @@ function HeroSection({ data }) {
                                 : <Countdown
                                     date={
                                         status
-                                            ? new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
-                                            : new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))
+                                            ? new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr)).toISOString()
+                                            : new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib)).toISOString()
                                     }
                                     daysInHours
                                     overtime
