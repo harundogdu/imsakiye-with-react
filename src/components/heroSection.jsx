@@ -16,7 +16,7 @@ function HeroSection({ data }) {
     //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
-        
+
         data.items.map(item => {
             if (item.date_for === moment().format('YYYY-M-D')) {
                 setActiveDay(item);
@@ -64,8 +64,8 @@ function HeroSection({ data }) {
                                 : <Countdown
                                     date={
                                         status
-                                            ? new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr) + "Z").toISOString()
-                                            : new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib) + "Z").toISOString()
+                                            ? moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr)
+                                            : moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib)
                                     }
                                     daysInHours
                                     overtime
