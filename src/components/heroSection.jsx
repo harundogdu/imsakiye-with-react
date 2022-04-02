@@ -16,13 +16,19 @@ function HeroSection({ data }) {
     //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
-        const tomorrow = moment().add(1, 'days').format('L')
-        const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
+        
+        data.items.map(item => {
+            if (item.date_for === moment().format('YYYY-M-D')) {
+                setActiveDay(item);
+            }
+            if (item.date_for === moment().add(1, 'days').format('YYYY-M-D')) {
+                setNextDay(item);
+            }
 
-        if (moment().format('YYYY-M-D') !== data.items[0].date_for) setActiveDay(day)
-        else setNextDay(day)
+            return null;
+        })
 
-    }, [activeDay, data.items])
+    }, [city, data.items])
 
     return (
         <div className='h-screen flex flex-col md:items-center md:justify-center py-5 text-white w-full'>
