@@ -8,18 +8,19 @@ import Countdown from 'react-countdown';
 
 function HeroSection({ data }) {
     const [activeDay, setActiveDay] = React.useState(data.items[0]);
-    const [status, setStatus] = React.useState(true);
+    const [nextDay, setNextDay] = React.useState(data.items[1])
+    const [status, setStatus] = React.useState(false);
     const { isLoading, city } = useSelector(state => state.city);
 
     // safari detect
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
-        if (moment().format('YYYY-M-D') !== data.items[0].date_for) {
-            const tomorrow = moment().add(1, 'days').format('L')
-            const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
-            setActiveDay(day)
-        }
+        const tomorrow = moment().add(1, 'days').format('L')
+        const day = data.items.find(item => (moment(item.date_for).format('L') === tomorrow))
+
+        if (moment().format('YYYY-M-D') !== data.items[0].date_for) setActiveDay(day)
+        else setNextDay(day)
 
     }, [activeDay, data.items])
 
@@ -35,7 +36,10 @@ function HeroSection({ data }) {
                         <div className='text-3xl font-bold'>Tarih</div>
                         <div className='text-3xl'>
                             {
-                                isLoading ? "..." : moment(activeDay.date_for).format('L') || moment().format('L')
+                                isLoading ? "..."
+                                    : isSafari
+                                        ? moment(activeDay.date_for).format('DD MMMM YYYY')
+                                        : moment(activeDay.date_for).locale('tr').format('DD MMMM YYYY')
                             }
                         </div>
                     </div>
@@ -54,22 +58,14 @@ function HeroSection({ data }) {
                             isLoading
                                 ? "..."
                                 : <Countdown
-                                    date={`
-                                    ${status
-                                            ?
-                                            isSafari
-                                                ? new Date(activeDay.date_for + "T" + activeDay.fajr)
-                                                : activeDay.date_for + " " + activeDay.fajr
-                                            :
-                                            isSafari
-                                                ? new Date(activeDay.date_for + "T" + activeDay.maghrib)
-                                                : activeDay.date_for + " " + activeDay.maghrib
-                                        }
-                                        `}
+                                    date={
+                                        status
+                                            ? new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
+                                            : new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))
+                                    }
                                     daysInHours
                                     overtime
-                                    onComplete={() => setStatus(!status)}
-                                />
+                                    onComplete={() => setStatus(!status)} />
                         }
                     </div>
                 </div>
@@ -89,7 +85,7 @@ function HeroSection({ data }) {
                     }
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
