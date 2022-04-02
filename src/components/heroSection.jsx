@@ -13,7 +13,7 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
 
     // safari detect
-    //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
         const tomorrow = moment().add(1, 'days').format('L')
@@ -32,12 +32,14 @@ function HeroSection({ data }) {
 
                 <div className=' flex flex-col space-y-2'>
                     <h1 className='text-4xl font-bold text-center'>{city}</h1>
-                    <div className=' flex items-center justify-center gap-x-4'>
+                    <div className=' flex items-center justify-center gap-x-4 flex-col md:flex-row'>
                         <div className='text-3xl font-bold'>Tarih</div>
                         <div className='text-3xl'>
                             {
                                 isLoading ? "..."
-                                    : new Date(activeDay.date_for).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })
+                                    : isSafari
+                                        ? moment(activeDay.date_for).format('MMMM Do YYYY')
+                                        : moment(activeDay.date_for).format('LL')
                             }
                         </div>
                     </div>
@@ -47,7 +49,7 @@ function HeroSection({ data }) {
                     <span className={`mr-2`}>
                         {
                             status
-                                ? "Sahura Kalan Süre"
+                                ? "Sahur için Kalan Süre"
                                 : "İftara Kalan Süre"
                         }
                     </span>
