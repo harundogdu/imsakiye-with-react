@@ -9,7 +9,7 @@ import Countdown from 'react-countdown';
 function HeroSection({ data }) {
     const [activeDay, setActiveDay] = React.useState(data.items[0]);
     const [nextDay, setNextDay] = React.useState(data.items[1])
-    const [status, setStatus] = React.useState(false);
+    const [status, setStatus] = React.useState(true);
     const { isLoading, city } = useSelector(state => state.city);
 
     // safari detect
@@ -61,15 +61,20 @@ function HeroSection({ data }) {
                         {
                             isLoading
                                 ? "..."
-                                : <Countdown
-                                    date={
-                                        status
-                                            ? moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr)
-                                            : moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib)
-                                    }
-                                    daysInHours
-                                    overtime
-                                    onComplete={() => setStatus(!status)} />
+                                : status
+                                    ? <Countdown
+                                        date={moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr)}
+                                        daysInHours
+                                        onComplete={() => setStatus(false)}
+                                        overtime
+                                    />
+                                    :
+                                    <Countdown
+                                        date={moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.maghrib)}
+                                        daysInHours
+                                        overtime
+                                        onComplete={() => setStatus(true)}
+                                    />
                         }
                     </div>
                 </div>
