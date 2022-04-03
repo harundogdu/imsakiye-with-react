@@ -13,10 +13,9 @@ function HeroSection({ data }) {
     const { isLoading, city } = useSelector(state => state.city);
 
     // safari detect
-    //const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     React.useEffect(() => {
-
         data.items.map(item => {
             if (item.date_for === moment().format('YYYY-M-D')) {
                 setActiveDay(item);
@@ -27,8 +26,15 @@ function HeroSection({ data }) {
 
             return null;
         })
+    }, [city, data.items, status])
 
-    }, [city, data.items])
+    React.useEffect(() => {
+        if (activeDay.date_for === moment().format('YYYY-M-D')) {
+            setStatus(false);
+        } else {
+            setStatus(true);
+        }
+    }, [activeDay, nextDay])
 
     return (
         <div className='h-screen flex flex-col md:items-center md:justify-center py-5 text-white w-full'>
@@ -43,7 +49,9 @@ function HeroSection({ data }) {
                         <div className='text-3xl'>
                             {
                                 isLoading ? "..."
-                                    : moment(activeDay.date_for).format('LL')
+                                    : isSafari
+                                        ? moment(activeDay.date_for).format('dd-MM-yyyy')
+                                        : moment(activeDay.date_for).format('Do MMMM dddd')
                             }
                         </div>
                     </div>
@@ -63,14 +71,14 @@ function HeroSection({ data }) {
                                 ? "..."
                                 : status
                                     ? <Countdown
-                                        date={moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr)}
+                                        date={new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))}
                                         daysInHours
                                         onComplete={() => setStatus(false)}
                                         overtime
                                     />
                                     :
                                     <Countdown
-                                        date={moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.maghrib)}
+                                        date={new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))}
                                         daysInHours
                                         overtime
                                         onComplete={() => setStatus(true)}
