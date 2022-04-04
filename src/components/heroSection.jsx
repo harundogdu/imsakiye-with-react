@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import Countdown from 'react-countdown';
 
 function HeroSection({ data }) {
-    const [activeDay, setActiveDay] = React.useState(data.items[0]);
-    const [nextDay, setNextDay] = React.useState(data.items[1])
-    const [status, setStatus] = React.useState(true);
-    const { isLoading, city } = useSelector(state => state.city);
+    const { isLoading, city }           = useSelector(state => state.city);
+    const [activeDay, setActiveDay]     = React.useState(data.items[0]);
+    const [nextDay, setNextDay]         = React.useState(data.items[1])
+    const [status, setStatus]           = React.useState(true);
+    const [sahurTime, setSahurTime]     = React.useState(moment(activeDay.date).format('HH:mm'));
+    const [iftarTime, setIftarTime]     = React.useState(moment(nextDay.date).format('HH:mm'));
 
     // safari detect
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -30,9 +32,17 @@ function HeroSection({ data }) {
 
     React.useEffect(() => {
         if (activeDay.date_for === moment().format('YYYY-M-D')) {
-            setStatus(false);
-        } else {
+            const sTime = new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.fajr))
+            const iTime = new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))
+            setSahurTime(sTime)
+            setIftarTime(iTime)
             setStatus(true);
+        } else {
+            const sTime = new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
+            const iTime = new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.maghrib))
+            setSahurTime(sTime)
+            setIftarTime(iTime)
+            setStatus(false);
         }
     }, [activeDay, nextDay])
 
@@ -71,14 +81,14 @@ function HeroSection({ data }) {
                                 ? "..."
                                 : status
                                     ? <Countdown
-                                        date={new Date(moment(nextDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))}
+                                        date={sahurTime}
                                         daysInHours
                                         onComplete={() => setStatus(false)}
                                         overtime
                                     />
                                     :
                                     <Countdown
-                                        date={new Date(moment(activeDay.date_for).format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))}
+                                        date={iftarTime}
                                         daysInHours
                                         overtime
                                         onComplete={() => setStatus(true)}
