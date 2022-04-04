@@ -32,8 +32,8 @@ export const citySlice = createSlice({
         })
 
         builder.addCase(fetchCityByCityName.fulfilled, (state, action) => {
-            state.isLoading = false
             state.data = action.payload.data
+            state.isLoading = false
         })
 
         builder.addCase(fetchCityByCityName.rejected, (state, action) => {
