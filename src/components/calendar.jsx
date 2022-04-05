@@ -84,7 +84,6 @@ function Calendar({ data }) {
                                 <tr>
                                     <td colSpan={width > 768 ? 10 : 7} className="text-center pt-2">
                                         Ramazan Bayramı 1. Gün : {isSafari ? moment(festivalDay[0].date_for, 'yyyy-M-D').format("Do MMMM dddd") : moment(festivalDay[0].date_for).format('Do MMMM dddd')}
-}
                                     </td>
                                 </tr>
                             </tbody>
