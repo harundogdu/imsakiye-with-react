@@ -68,13 +68,13 @@ function HeroSection({ data }) {
                 </div>
 
                 <div className='flex flex-col items-center justify-center text-3xl'>
-                    <span className={`mr-2`}>
+                    <p className={`mr-2 text-center my-1`}>
                         {
                             status
                                 ? "Sahur için Kalan Süre"
                                 : "İftara Kalan Süre"
                         }
-                    </span>
+                    </p>
                     <div>
                         {
                             isLoading

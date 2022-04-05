@@ -11,6 +11,9 @@ function Calendar({ data }) {
     const limitedData = data.items.slice(0, 30)
     const festivalDay = data.items.slice(30, 31);
 
+    // safari detect
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
     return (
         <div className="w-full md:w-11/12 rounded-lg shadow-2xl p-2 bg-tertiary text-primary">
             {
@@ -25,7 +28,6 @@ function Calendar({ data }) {
                                         width > 768
                                             ?
                                             <>
-                                                <th>Gün</th>
                                                 <th>Hicri Tarih</th>
                                                 <th> Tarih</th>
                                             </>
@@ -59,9 +61,11 @@ function Calendar({ data }) {
                                                 width > 768
                                                     ?
                                                     <>
-                                                        <td>{moment(item.date_for).format("dddd")}</td>
                                                         <td>{index} Ramazan 1443</td>
-                                                        <td>{moment(item.date_for).format("DD MMMM YYYY")}</td>
+                                                        <td>{
+                                                            isSafari
+                                                                ? moment(item.date_for, 'yyyy-M-D').format("Do MMMM dddd")
+                                                                : moment(item.date_for).format('Do MMMM dddd')}</td>
                                                     </>
                                                     :
                                                     null
