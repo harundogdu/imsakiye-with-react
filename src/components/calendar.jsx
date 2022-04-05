@@ -65,7 +65,8 @@ function Calendar({ data }) {
                                                         <td>{
                                                             isSafari
                                                                 ? moment(item.date_for, 'yyyy-M-D').format("Do MMMM dddd")
-                                                                : moment(item.date_for).format('Do MMMM dddd')}</td>
+                                                                : moment(item.date_for).format('Do MMMM dddd')}
+                                                        </td>
                                                     </>
                                                     :
                                                     null
@@ -82,7 +83,8 @@ function Calendar({ data }) {
                                 })}
                                 <tr>
                                     <td colSpan={width > 768 ? 10 : 7} className="text-center pt-2">
-                                        Ramazan Bayramı 1. Gün : {moment(festivalDay[0].date_for.toString()).format('LL')}
+                                        Ramazan Bayramı 1. Gün : {isSafari ? moment(festivalDay[0].date_for, 'yyyy-M-D').format("Do MMMM dddd") : moment(festivalDay[0].date_for).format('Do MMMM dddd')}
+}
                                     </td>
                                 </tr>
                             </tbody>
