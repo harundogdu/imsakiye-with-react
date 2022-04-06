@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux';
 import Countdown from 'react-countdown';
 
 function HeroSection({ data }) {
-    const { isLoading, city }           = useSelector(state => state.city);
-    const [activeDay, setActiveDay]     = React.useState(data.items[0]);
-    const [nextDay, setNextDay]         = React.useState(data.items[1])
-    const [status, setStatus]           = React.useState(true);
-    const [sahurTime, setSahurTime]     = React.useState(moment(activeDay.date,'yyyy-M-D').format('HH:mm'));
-    const [iftarTime, setIftarTime]     = React.useState(moment(nextDay.date,'yyyy-M-D').format('HH:mm'))
+    const { isLoading, city } = useSelector(state => state.city);
+    const [activeDay, setActiveDay] = React.useState(data.items[0]);
+    const [nextDay, setNextDay] = React.useState(data.items[1])
+    const [status, setStatus] = React.useState(true);
+    const [sahurTime, setSahurTime] = React.useState(moment(activeDay.date, 'yyyy-M-D').format('HH:mm'));
+    const [iftarTime, setIftarTime] = React.useState(moment(nextDay.date, 'yyyy-M-D').format('HH:mm'))
 
     // safari detect
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -32,17 +32,34 @@ function HeroSection({ data }) {
 
     React.useEffect(() => {
         if (activeDay.date_for === moment().format('YYYY-M-D')) {
-            const sTime = new Date(moment(activeDay.date_for,'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(activeDay.fajr))
-            const iTime = new Date(moment(activeDay.date_for,'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))
+            const sTime = new Date(moment(activeDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(activeDay.fajr))
+            const iTime = new Date(moment(activeDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(activeDay.maghrib))
             setSahurTime(sTime)
             setIftarTime(iTime)
-            setStatus(true);
+
+            const nowDate = new Date();
+
+            if ((nowDate.getTime() < sTime.getTime() && iTime.getTime() > nowDate.getTime()) || (nowDate.getTime() > iTime.getTime())) {
+                setStatus(true)
+                return;
+            }
+
+            setStatus(false)
+
         } else {
-            const sTime = new Date(moment(nextDay.date_for,'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
-            const iTime = new Date(moment(nextDay.date_for,'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.maghrib))
+            const sTime = new Date(moment(nextDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
+            const iTime = new Date(moment(nextDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.maghrib))
             setSahurTime(sTime)
             setIftarTime(iTime)
-            setStatus(false);
+
+            const nowDate = new Date();
+
+            if (nowDate.getTime() < sTime.getTime()) {
+                setStatus(true)
+                return;
+            }
+
+            setStatus(false)
         }
     }, [activeDay, nextDay])
 
@@ -60,7 +77,7 @@ function HeroSection({ data }) {
                             {
                                 isLoading ? "..."
                                     : isSafari
-                                        ? moment(activeDay.date_for,'yyyy-M-D').format("Do MMMM dddd")
+                                        ? moment(activeDay.date_for, 'yyyy-M-D').format("Do MMMM dddd")
                                         : moment(activeDay.date_for).format('Do MMMM dddd')
                             }
                         </div>
