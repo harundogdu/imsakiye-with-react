@@ -36,18 +36,23 @@ function HeroSection({ data }) {
 
             const currentSahurTime = new Date(moment(currentDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(currentDay.fajr))
             const currentIftarTime = new Date(moment(currentDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(currentDay.maghrib))
+            const nextSahurTime = new Date(moment(nextDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
 
-            if (currentSahurTime.getTime() < currentIftarTime.getTime() && currentIftarTime.getTime() < new Date().getTime()) {
+            if (new Date().getTime() < currentSahurTime.getTime()) {
                 setSahurTime(currentSahurTime)
-            } else {
-                const nextSahurTime = new Date(moment(nextDay.date_for, 'yyyy-M-D').format('YYYY-MM-DD') + "T" + convertTime(nextDay.fajr))
-
-                if (nextSahurTime > currentIftarTime) {
-                    setSahurTime(nextSahurTime)
-                }
+                setTimeStatus(false)
             }
 
-            setIftarTime(currentIftarTime)
+            else if (new Date().getTime() > currentIftarTime.getTime()) {
+                setSahurTime(nextSahurTime)
+                setTimeStatus(false)
+            }
+
+            else if (currentIftarTime.getTime() > new Date().getTime() && new Date().getTime() > currentSahurTime.getTime()) {
+                setIftarTime(currentIftarTime)
+                setTimeStatus(true)
+            }
+
         }
 
     }, [currentDay, nextDay, timeStatus])
