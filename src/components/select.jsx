@@ -15,12 +15,13 @@ function Select() {
                 onChange={e => dispatch(setCity(e.target.value))}
                 defaultValue={city}
             >
+                <option value="Bodrum">Bodrum</option>
                 <option value="İstanbul">İstanbul</option>
                 <option value="Ankara">Ankara</option>
                 <option value="İzmir">İzmir</option>
                 {
                     cities.map(city => {
-                        if (city.name !== 'İstanbul' && city.name !== 'Ankara' && city.name !== 'İzmir') {
+                        if (city.name !== 'İstanbul' && city.name !== 'Ankara' && city.name !== 'İzmir' && city.name !== 'Bodrum') {
                             return <option value={city.name} key={city.id}>{city.name}</option>
                         }
                         return null;
